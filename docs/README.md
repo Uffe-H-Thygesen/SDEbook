@@ -4,7 +4,7 @@ This page contains supplementary information for my forthcoming textbook, to be 
 
 ![Front page of the SDE book](../frontpage(Thygesen2023.jpg)
 
-In the repo, you can find:
+In the 	[repo](https://www.github.com/Uffe-H-Thygesen/SDEbook), you can find:
 
 * Solutions to exercises in the book
 * Source code that generates the figures in the book
