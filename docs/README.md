@@ -1,6 +1,8 @@
 # Stochastic Differential Equations for Science and Engineering
 
-This page contains supplementary information for my forthcoming text, to be published by Taylor and Francis (CRC Press) in 2023.
+This page contains supplementary information for my forthcoming textbook, to be published by Taylor and Francis (CRC Press) in 2023.
+
+![Front page of the SDE book](../frontpage(Thygesen2023.jpg)
 
 In the repo, you can find:
 
