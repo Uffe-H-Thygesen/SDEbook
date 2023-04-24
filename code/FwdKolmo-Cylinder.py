@@ -1,4 +1,6 @@
 """
+Compute density of a substance that flows around a cylinder (in 2D).
+Computations are done using Fenics
 """
 
 from __future__ import print_function
@@ -6,7 +8,7 @@ import dolfin
 import fenics
 import numpy as np
 import matplotlib.pyplot as plt
-import mshr
+import gmsh
 
 # Define 2D geometry
 xmax = 5
@@ -33,7 +35,8 @@ C0exp = fenics.Expression('1./2./pi/s0/s0*exp(-(pow(x[0]-x0,2.)+pow(x[1]-y0,2.))
 C = dolfin.TrialFunction(V)
 v = dolfin.TestFunction(V)
 
-
+## Drift function for computing advective flow. Perform first
+## computations in polar coordinates; then convert to Cartesian
 class Drift(dolfin.UserExpression):
     def eval(self,values,x):
         r = np.sqrt(x[0]*x[0] + x[1]*x[1])
@@ -50,6 +53,7 @@ class Drift(dolfin.UserExpression):
 
 f = Drift()
 
+## New and old solution for time stepping
 Csol = dolfin.Function(V)
 Cold = dolfin.Function(V)
 
@@ -64,7 +68,11 @@ for Pe in [1,10,100]:
     # Define initial value
     Cold.assign(fenics.interpolate(C0exp, V))
 
+    ## Define variational problem for updating. This is an implicit
+    ## Euler method.
     F = (C-Cold)*v/dt*dolfin.dx + dolfin.dot(D*dolfin.grad(C) - f*C, dolfin.grad(v))*dolfin.dx 
+
+    ## Get matrix formulation of the update
     a, L = dolfin.lhs(F), dolfin.rhs(F)
 
     num_steps = 10
@@ -88,5 +96,5 @@ for Pe in [1,10,100]:
     
     plt.savefig("C-"+str(Pe)+".pdf", bbox_inches='tight')
 
-## Create dummy for use with makefile
+## Create dummy figure for use with makefile to indicate that the program has run
 plt.savefig("FwdKolmo-Cylinder.pdf")

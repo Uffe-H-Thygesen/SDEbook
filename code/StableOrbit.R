@@ -1,1 +1,0 @@
-### A dynamic system 

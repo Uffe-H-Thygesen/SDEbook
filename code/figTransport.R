@@ -1,4 +1,5 @@
-### Illustration for "transport" chapter.
+### Illustration for "transport" chapter of
+### Gaussian bell attenuated by diffusion
 
 set.seed(123456)
 

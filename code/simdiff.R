@@ -1,76 +1,42 @@
 ## Simulating diffusion for "transport" chapter
 
+require(SDEtools)
+require(Matrix)
+
 set.seed(123456) # For reproducible results
 
-Npart <- 100
-xlim <- c(0,1)
-ylim <- c(0,1)
+Npart <- 100     ## Number of particles
+xylim <- c(0,1)  ## Plotting region (x/y-symmetric)
 
 ## Diffusivity
-D <- 1
+D <- 2
 
 ## Simulation control
-dt <- 0.00001
-Nt <- 500
-
-## Helper to project back into domain
-project <- function(z,zlim)
-  {
-    I.left <- (z < zlim[1])
-    z[I.left] <- 2*zlim[1]-z[I.left]
-
-    I.right <- (z > zlim[2])
-    z[I.right] <- 2*zlim[2]-z[I.right]
-
-    return(z)
-  }
-    
+dt <- 1e-5
+T <- 5e-3
+tv <- seq(0,T,dt)
+Nt <- length(tv)
 
 ## Init
-xmean <- 0.5
-ymean <- 0.5
-xsd <- 0.05
-ysd <- 0.05
+xymean <- 0.5
+xysd <- 0.05
 
-X <- Y <- array(0,c(Npart,Nt))
+XY0 <- rnorm(2*Npart,xymean,xysd)
 
-X[,1] <- project(rnorm(Npart,xmean,xsd),xlim)
-Y[,1] <- project(rnorm(Npart,ymean,ysd),ylim)
-
-for(i in 2:Nt)
-  {
-    X[,i] <- project(X[,i-1] + sqrt(2*D*dt)*rnorm(Npart),xlim)
-    Y[,i] <- project(Y[,i-1] + sqrt(2*D*dt)*rnorm(Npart),ylim)
-  }
+XY <- rvBM(tv,n=2*Npart,sigma=sqrt(2*D),B0=XY0)
+X <- XY[,1:Npart]
+Y <- XY[,-(1:Npart)]
 
 ### Eulerian
-Nf <- 50    # Number of Fourier coefficients
-
-k <- 0:Nf
-
 xvec <- seq(0,1,length=101)
 
-FourierSol <- function(t)
-  {
-    phiF <- rep(1,length(xvec))
-    for(i in k[-1])
-      phiF <- phiF + 2*(-1)^i*exp(-D*(2*pi*i)^2*t)*cos(2*pi*i*xvec)
+phi0 <- dnorm(xvec,xymean,xysd)  ## P.d.f. of each coordinate
+PHI0 <- outer(phi0,phi0)         ## Joint p.d.f. of both coordinates
 
-    return(phiF)
-  }
+phiT <- dnorm(xvec,xymean,sqrt(xysd^2+2*D*T))
+PHIT <- outer(phiT,phiT)         ## ... same for the terminal position
 
-
-### Eulerian densities
-
-t0 <- xsd^2/2/D
-phi0F <- FourierSol(t0)
-phi0 <- outer(phi0F,phi0F)
-
-maxPhi <- max(phi0F)^2
-
-t1 <- t0+Nt*dt
-phi1F <- FourierSol(t1)
-phi1 <- outer(phi1F,phi1F)
+maxPhi <- max(phi0)^2            ## For scaling of the colors
 
 ### Create plot
 require(rasterpdf) ## To avoid raster appearance (!)
@@ -78,36 +44,33 @@ raster_pdf(file="simdiff.pdf")
 
 par(mfrow=c(2,2),mar=rep(0.1,4),cex=1.5)
 
-## Color codes. White background for zero density:
-col <- gray(seq(1,0,length=2^6+1))
+## Color codes. White background for zero density. Increase contrast at low
+## densities
+col <- gray(seq(1,0,length=2^8+1)^4)
 
-trans <- function(x) x^0.4 # sqrt
-zlim <- c(0,trans(maxPhi))
+zlim <- c(0,maxPhi)
 
 ## Subpanels with Eulerian view
-image(trans(abs(phi0)),zlim=zlim,col=col,xaxt="n",yaxt="n",bty="o") 
+image(PHI0,zlim=zlim,col=col,xaxt="n",yaxt="n",bty="o") 
 box()
-text(xmean,ylim[2],"Initial",pos=1)
-text(xlim[1],ymean,"Concentration",srt=90,adj=c(0.5,1.5))
-image(trans(abs(phi1)),zlim=zlim,col=col,xaxt="n",yaxt="n",bty="o")
+text(xymean,xylim[2],"Initial",pos=1)
+text(xylim[1],xymean,"Concentration",srt=90,adj=c(0.5,1.5))
+image(PHIT,zlim=zlim,col=col,xaxt="n",yaxt="n",bty="o")
 box()
-text(xmean,ylim[2],"Terminal",pos=1)
+text(xymean,xylim[2],"Terminal",pos=1)
 
 ## Subpanel with particles
 cex <- 0.5 
-plot(X[,1],Y[,1],pch=16,cex=cex,
-     xlim=xlim, ylim=ylim,col="darkgrey",xaxt="n",yaxt="n")
-text(xlim[1],ymean,"Particles",srt=90,adj=c(0.5,1.0))
+plot(X[1,],Y[1,],pch=16,cex=cex,
+     xlim=xylim, ylim=ylim,col="darkgrey",xaxt="n",yaxt="n")
+text(xylim[1],xymean,"Particles",srt=90,adj=c(0.5,1.0))
 
 # Pick a partcle which ends near desired end point 
-m <- which.min((X[,Nt]-1)^2+(Y[,Nt]-1)^2)
+m <- which.min((X[Nt,]-1)^2+(Y[Nt,]-1)^2)
 
-plot(X[,Nt],Y[,Nt],pch=16,cex=cex,xlim=xlim,
+plot(X[Nt,],Y[Nt,],pch=16,cex=cex,xlim=xylim,
      ylim=ylim,col="darkgrey",xaxt="n",yaxt="n")
 
-points(X[m,],Y[m,],col="black",pch=16,cex=0.5*cex)
-
-## points(X[m,1],Y[m,1],pch="+",cex=cex,col="green")
-## points(X[m,Nt],Y[m,Nt],pch="+",cex=cex,col="red")
+lines(X[,m],Y[,m],col="black",pch=16,cex=0.5*cex)
 
 dev.off()
