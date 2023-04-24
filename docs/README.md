@@ -4,8 +4,12 @@ This page contains supplementary information for my forthcoming textbook, to be 
 
 ![Front page of the SDE book](Thygesen2023-red.jpg)
 
+See the table of contents [here](TOC.pdf)
+
 In the 	[repo](https://www.github.com/Uffe-H-Thygesen/SDEbook), you can find:
 
 * Solutions to exercises in the book
 * Source code that generates the figures in the book
 * Additional exercise sheets (with solutions)
+
+The software uses my R toolbox for stochastic differential equations, SDEtools. Check out its [repo](https://www.github.com/Uffe-H-Thygesen/SDEtools).
