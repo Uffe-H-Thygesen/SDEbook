@@ -1,5 +1,6 @@
 title: SDEbook 
 description: Supplementary Info for my SDE book
-remote_theme: pages-themes/dinky@v0.2.0
+logo: /docs/Thygesen2023-red.jpg
+remote_theme: pages-themes/minimal 
 plugins:
 - jekyll-remote-theme # add this line to the plugins list if you already have one
