@@ -9,7 +9,7 @@ See the book at [Amazon](https://a.co/d/9KPknuO) or at [Taylor and Francis](http
 In the 	[repo](https://www.github.com/Uffe-H-Thygesen/SDEbook), you can find:
 
 * Solutions to exercises in the book
-* Source code that generates the figures in the book
+* [Source code](code/TABLE.md) that generates the figures in the book
 * Additional exercise sheets (with solutions)
 
 The software uses my R toolbox for stochastic differential equations, [SDEtools](https://www.github.com/Uffe-H-Thygesen/SDEtools).
