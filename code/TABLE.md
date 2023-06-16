@@ -27,6 +27,7 @@ The following table shows, for each figure in the book, the page number and the 
 |6.4	|123	|[vanderPol.R](vanderPol.R)|
 |6.6	|127	|[itointegral.R](itointegral.R)|
 |7.2	|149	|[ito-integral-linear.R](ito-integral-linear.R)|
+|13.6   |344    |[DVM.R](DVM.R)|
 
 Code for figures in chapter 8 and onwards are still awaiting cleanup.
 
