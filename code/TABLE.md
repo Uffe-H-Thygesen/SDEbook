@@ -29,5 +29,5 @@ The following table shows, for each figure in the book, the page number and the 
 |7.2	|149	|[ito-integral-linear.R](ito-integral-linear.R)|
 |13.6   |344    |[DVM.R](DVM.R)|
 
-Code for figures in chapter 8 and onwards are still awaiting cleanup.
+Code for some figures in chapter 8 and onwards are still awaiting cleanup.
 
