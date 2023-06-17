@@ -30,7 +30,9 @@ The following table shows, for each figure in the book, the page number and the 
 |7.2	|149	|[ito-integral-linear.R](ito-integral-linear.R)|
 |8.2	|174	|[explosion.R](explosion.R)|
 |8.3	|176	|[figStrongError.R](figStrongError.R),[figEuler.R](figEuler.R)|
+|8.5	|182	|[figStrongError.R](figStrongError.R)|
+|9.3	|196	|[transprob.R](transprob.R)|
 |13.6   |344    |[DVM.R](DVM.R)|
 
-Code for some figures in chapter 8 and onwards are still awaiting cleanup.
+Code for some figures in chapter 9 and onwards are still awaiting cleanup.
 
