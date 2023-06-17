@@ -31,12 +31,12 @@ nt <- 120
 ny <- 100
 
 tv <- seq(0,1,length=nt+1)
-tc <- 0.5*(head(tv,-1)+tail(tv,-1))
-yv <- seq(0,2*yNC,length=ny+1)
-yc <- 0.5*(head(yv,-1)+tail(yv,-1))
-dy <- diff(yv)
-
+tc <- cell.centers(tv)
 dt <- diff(tv)
+
+yv <- seq(0,2*yNC,length=ny+1)
+yc <- cell.centers(yv)
+dy <- diff(yv)
 
 ## Generator without control: Pure diffusion in vertical and time flies with speed 1
 G0 <- fvade2d(ux=function(x,y)1,uy=function(x,y)0, Dx=function(x,y)0,Dy=function(x,y)Dy,
