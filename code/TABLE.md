@@ -32,7 +32,17 @@ The following table shows, for each figure in the book, the page number and the 
 |8.3	|176	|[figStrongError.R](figStrongError.R),[figEuler.R](figEuler.R)|
 |8.5	|182	|[figStrongError.R](figStrongError.R)|
 |9.3	|196	|[transprob.R](transprob.R)|
+|9.4	|209	|[vanderPol.R](vanderPol.R)|
+|10.2-10.9	|236	|[hmmfilter.R](hmmfilter.R)|
+|11.1		|264	|[BMdriftExit.R](BMdriftExit.R)|
+|11.2		|266	|[OU-hitting.R](OU-hitting.R)|
+|11.3		|277	|[Boundary.R](Boundary.R)|
+|11.4		|282	|[bond-pricing.R](bond-pricing.R)|
+|11.5		|287	|[DVM.R](DVM.R)|
+|12.2		|296	|[lyap-logistic.R](lyap-logistic.R)|
+|12.3		|300	|[doublewell.R](doublewell.R)|
+|12.4		|	|
+|12.6		|307	|[RmA.R](RmA.R)|
 |13.6   |344    |[DVM.R](DVM.R)|
 
-Code for some figures in chapter 9 and onwards are still awaiting cleanup.
 
