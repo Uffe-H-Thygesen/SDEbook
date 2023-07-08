@@ -10,8 +10,8 @@ Note: This errata concerns the printed version (2023)
 |----|--------|----------|
 | 87 | Exercise 4.18 | Replace $M_i = \sum_{j=1}^i X_i$  with $M_i = \sum_{j=1}^i X_j$|
 | 197| l. 5 | "The white curve" should be "The black curve" |
-| 219| Last displayed formula | Replace $\mathbb{Q} \{ Z | {\cal G}\} = \mathbb{E} \{ L_T Z| {\cal G} \}$ with $\mathbb{Q} \{ Z | {\cal G}\} = \mathbb{E} \{ L_T Z| {\cal G} \} / \mathbb{E} \{ L_T | {\cal G} \} $ |
-| 219 | l. 5 from bottom | Replace $\mathbb{Q}\{ W_t | {\cal F}_s\} = \mathbb{E}\{ W_t L_t | {\cal F}_s\} $ with $\mathbb{Q}\{ W_t | {\cal F}_s\} = \mathbb{E}\{ W_t L_t | {\cal F}_s\} / L_s $ |
+| 219| Last displayed formula | Replace ${\mathbb Q} \{ Z | {\cal G}\} = {\mathbb E} \{ L_T Z| {\cal G} \}$ with ${\mathbb Q} \{ Z | {\cal G}\} = {\mathbb E} \{ L_T Z| {\cal G} \} / {\mathbb E} \{ L_T | {\cal G} \} $ |
+| 219 | l. 5 from bottom | Replace ${\mathbb Q}\{ W_t | {\cal F}_s\} = {\mathbb E}\{ W_t L_t | {\cal F}_s\} $ with ${\mathbbQ}\{ W_t | {\cal F}_s\} = {\mathbb E}\{ W_t L_t | {\cal F}_s\} / L_s $ |
 | 308 | l. 2 | Replace $\max\{Y_t: t \geq 0 \}$ with $\max\{\log X_t: t \geq 0 \}$ |
 
 ## Spelling errors etc.
