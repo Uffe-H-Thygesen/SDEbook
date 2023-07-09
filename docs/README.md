@@ -2,7 +2,7 @@
 
 This page contains supplementary information for my textbook, published by Taylor and Francis (CRC Press) in 2023.
 
-View the [front page](Thygesen2023.jpg) or the [table of contents](TOC.pdf)
+View the [front page](Thygesen2023.jpg) or the [table of contents](TOC.pdf), or download the [preprint version](Thygesen 2023 SDEs for science and engineering - PREPRINT.pdf) of the book. 
 
 See the book at [Amazon](https://a.co/d/9KPknuO), at the [DTU bookstore](https://www.polyteknisk.dk/home/Detaljer/9781032232171) or at [Taylor and Francis](https://www.taylorfrancis.com/books/mono/10.1201/9781003277569/stochastic-differential-equations-science-engineering-uffe-h%C3%B8gsbro-thygesen?context=ubx&refId=91568383-8f54-4388-961a-ffe3fdc2ac04). 
 
