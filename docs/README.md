@@ -8,7 +8,7 @@ See the book at [Amazon](https://a.co/d/9KPknuO), at the [DTU bookstore](https:/
 
 In the 	[repo](https://www.github.com/Uffe-H-Thygesen/SDEbook), you can find:
 
-* An [erratum](https://github.com/Uffe-H-Thygesen/SDEbook/tree/main/Errata.md) 
+* An [erratum](https://github.com/Uffe-H-Thygesen/SDEbook/tree/main/Errata.pdf) 
 * [Solutions to exercises](https://github.com/Uffe-H-Thygesen/SDEbook/tree/main/Solutions) in the book
 * [Source code](https://github.com/Uffe-H-Thygesen/SDEbook/blob/main/code/TABLE.md) that generates the figures in the book
 * [Additional exercise sheets](https://github.com/Uffe-H-Thygesen/SDEbook/tree/main/Exercises) (with solutions)
