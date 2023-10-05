@@ -62,29 +62,19 @@ plot.ind <- times %in% plot.times
 matplot(plot.times,t(XV[1:n,plot.ind]),type="l")
 
 ## Note: The simulation can also be done with the Euler-Maruyama method, or the Heun method, but this would require excessively short time steps. For example, the Euler-Maruyama method with a time step of 0.01:
-sim.times <- seq(0,900,0.01)
+sim.times <- seq(0,9,0.01)
 f <- function(x) A %*% x
 g <- function(x) G
-sim.euler <- euler(f,g,sim.times,xv0)
+print(system.time(sim.euler <- euler(f,g,sim.times,xv0)))
 CXV.euler <- cov(sim.euler$X[sim.times>burnin,])
 print(tr(CXV.euler)/tr(CXV.ana))
 ## Note that the sum-of-variances is much bigger for the simulation than
 ## for the analytical result. This is due to the time discretization.
 ## It can be improved somewhat with the Heun method (note that the noise is
-## additive, so the Heun method is consistent), or with semi-implicit methods.
-## Here, we use a stochastic leapfrog
+## additive, so the Heun method is consistent)
 
-dt <- 0.1
-lf.times <- seq(0,900,dt)
-X <- V <- array(NA,c(n,length(lf.times)))
-X[,1] <- x0
-V[,1] <- v0 +1 
+sim.heun <- heun(f,g,sim.times,xv0)
+CXV.heun <- cov(sim.heun$X[sim.times>burnin,])
+print(tr(CXV.heun)/tr(CXV.ana))
 
-for(i in 2:length(lf.times))
-{
-    V[,i] <- as.numeric(V[,i-1] - (K %*% X[,i-1] + c*V[,i-1])*dt + sigma*sqrt(dt)*rnorm(n))
-    X[,i] <- X[,i-1] + V[,i] * dt
-}
 
-CXV.lf <- cov(cbind(t(X),t(V)))
-print(tr(CXV.lf)/tr(CXV.ana))

@@ -1,9 +1,5 @@
 ## -----------------------------------------------------------------------------
-## Helper function for simulation of Brownian motion, as per week 3
-rBM <- function(tvec)
-{
-    return(cumsum(rnorm(length(tvec),mean=0,sd=sqrt(diff(c(0,tvec))))))
-}
+require(SDEtools)
 
 ## System parameters
 m <- 1    # [kg]
@@ -43,19 +39,11 @@ plot(tvec,X[2,],type="l",xlim=c(0,100),xlab="Time",ylab="Velocity")
 
 
 ## -----------------------------------------------------------------------------
-lyap <- function(A,Q) 
-{
-    A <- as.matrix(A)
-    I <- diag(rep(1,nrow(A)))
-    P <- kronecker(I,A)+kronecker(A,I)
-    X <- -solve(P,as.numeric(Q))
-    return(matrix(X,nrow=nrow(A)))
-}
 
 Pinf <- P[,,length(tvec)]
 Pinf2 <- lyap(A,G%*%t(G))
 
-## Print the empirical covariance and compare with the solution of the Lyapunov equation
+## Print the empirical covariance and compare with the two solutions of the Lyapunov equation 
 print(cov(t(X)))
 print(Pinf)
 print(Pinf2)
@@ -77,7 +65,7 @@ acf(X[1,],lag.max=50/dt)
 ivec <- seq(0,50/dt,1)
 tvec <- ivec * dt
 
-require(expm)
+require(Matrix)
 rhovec <- sapply(tvec,function(t) (Pinf2 %*% expm(t(A)*t) )[1,1])
 lines(ivec,rhovec/rhovec[1],col="red",lwd=3)
 
@@ -91,32 +79,38 @@ Hs <- sapply(ws,H)
 par(mfrow=c(3,1))
 plot(ws,abs(Hs),log="xy",type="l",ylab="|H|")
 plot(ws,Arg(Hs),log="x",type="l",ylab="|H|")
-plot(ws,abs(Hs)^2*sigma^2,type="l",log="xy",ylab="Var.spec.")
+plot(ws,abs(Hs)^2,type="l",log="xy",ylab="Var.spec.")
 lines(ws,rep(sigma^2,length(ws)),lty="dashed")
 
 
 ## -----------------------------------------------------------------------------
 ## Specific examples of system parameters 
-a <- -2
-g <- 3
+lambda <- 1
+sigma <- 1
 x <- 1
 
-EXt <- function(t) x*exp(a*t)
+EXt <- function(t) x*exp(-lambda*t)
 
 ## Differential lyapunov equation
-Lyap <- function(V) 2*a*V + g^2
+Lyap <- function(V) -2*lambda*V + sigma^2
 
 ## Analytical solution of the equation
-VXt <- function(t) g^2/2/a*(exp(2*a*t)-1)
+VXt <- function(t) sigma^2/2/lambda*(1-exp(-2*lambda*t))
 
 ## Limit as time goes to infinity, assuming a<0
-VXinf <- -g^2/2/a
+VXinf <- sigma^2/2/lambda
 
 ## Test that it is an equilibrium point for the Lyapunov equation
 print(Lyap(VXinf))
 
-par(mfrow=c(2,1))
-plot(EXt,from=0,to=3)
-plot(VXt,from=0,to=3)
-abline(h=VXinf,lty="dashed")
+plot(EXt,from=0,to=10,lty="dashed",ylim=c(-1,1)*1.5)
+plot(function(t) EXt(t)+sqrt(VXt(t)),from=0,to=10,add=TRUE,lty="dotted")
+plot(function(t) EXt(t)-sqrt(VXt(t)),from=0,to=10,add=TRUE,lty="dotted")
+
+abline(h= sqrt(VXinf),lty="dotdash")
+abline(h=-sqrt(VXinf),lty="dotdash")
+
+times <- seq(0,10,0.01)
+sim <- euler(f=function(x)-lambda*x,g=function(x) sigma,times=times,x0=x)
+lines(sim$times,sim$X)
 

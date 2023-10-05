@@ -47,7 +47,7 @@ simXYZ <- function(X0,tv,B=NULL)
     }
     
     ## Compute Z by stochastic integration
-    Z <- Y[1] +  stochint(dhdx(X),X) + 0.5*stochint(dh2dx2(X),covariation(X,X))
+    Z <- Y[1] +  stochint(dhdx(X),X) + 0.5*stochint(dh2dx2(X),QuadraticVariation(X))
 
     return(list(X=X,Y=Y,Z=Z))
 }
