@@ -10,6 +10,7 @@ dh2dx2 <- function(x) -1/x^2/sigma
 
 hi <- function(y) exp(y*sigma)
 
+pdf()
 
 ## -----------------------------------------------------------------------------
 ## Use package SDEtools for rBM, rvBM, stochint, and covariation

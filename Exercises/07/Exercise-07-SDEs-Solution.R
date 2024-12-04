@@ -11,7 +11,7 @@ sigma <- 0.1
 
 ## Simulation parameters
 dt <- 0.01
-x0 <- c(pi,sqrt(0.5)*sigma)
+x0 <- c(0,0)
 T <- 1000
 
 tv <- seq(0,T,dt)

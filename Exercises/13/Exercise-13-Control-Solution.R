@@ -29,7 +29,7 @@ J.ch <- mean(sqrt(0.5*sol.opt))
 
 
 ## -----------------------------------------------------------------------------
-matplot(tvec,cbind(sol.opt[,2],sol.ch[,2]),type="l")
+matplot(tvec,cbind(sol.opt[,2],sol.ch[,2]),type="l",xlab="t",ylab="X")
 
 
 ## -----------------------------------------------------------------------------
@@ -74,10 +74,10 @@ sol <- PolicyIterationSingular(G0,G1,k,uopt,do.minimize = FALSE)
 
 ## -----------------------------------------------------------------------------
 par(mfrow=c(2,1))
-plot(xc,sol$V - approx(xc,sol$V,1)$y)
+plot(xc,sol$V - approx(xc,sol$V,1)$y,xlab="x",ylab="V")
 lines(xc,0.5*log(xc))
       
-plot(xc,sol$u,ylim=c(0,max(xc)^2))
+plot(xc,sol$u,ylim=c(0,max(xc)^2),xlab="x",ylab="u")
 lines(xc,xc^2)
 
 
@@ -91,7 +91,7 @@ for(p in pv)
 {
     f <- function(x) x*(1-x^p)
     advection <- function(x) f(x) - dD(x)
-    G <- fvade(advection,D,xi,'rc')
+    G <- fvade(advection,D,xi,'r')
 
     sol <- PolicyIterationSingular(G,G1,k,uopt,do.minimize = FALSE)
     
@@ -101,6 +101,8 @@ for(p in pv)
 
 ## -----------------------------------------------------------------------------
 par(mfrow=c(2,1))
-matplot(xc,cbind(sols[[1]]$sol$V,sols[[2]]$sol$V,sols[[3]]$sol$V),type="l")
-matplot(xc,cbind(sols[[1]]$sol$u,sols[[2]]$sol$u,sols[[3]]$sol$u),type="l",ylim=c(0,20))
+matplot(xc,cbind(sols[[1]]$sol$V,sols[[2]]$sol$V,sols[[3]]$sol$V),
+	type="l",xlab="x",ylab="V")
+matplot(xc,cbind(sols[[1]]$sol$u,sols[[2]]$sol$u,sols[[3]]$sol$u),
+	type="l",xlab="x",ylab="u",ylim=c(0,20))
 

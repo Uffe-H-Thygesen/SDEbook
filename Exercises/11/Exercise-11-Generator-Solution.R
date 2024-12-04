@@ -1,6 +1,5 @@
 ## ----message=FALSE------------------------------------------------------------
 require(SDEtools)
-require(bvpSolve)
 require(MASS)
 
 f <- function(x) -x
@@ -41,12 +40,9 @@ print(paste("Probability of exit to the right: ",mean(res[2,]>0)))
 
 
 ## -----------------------------------------------------------------------------
-## Solving the BVP with bvpSolve
-fun <- function(x,y,p)
-    list(c(y[2],-2/g(x)/g(x)*f(x)*y[2]))
-
-x <- seq(-l,l,length=201)
-sol <- bvpshoot(yini = c(0,NA),yend=c(1,NA),x=x,func=fun,guess=0)
+## Using pracma::bvp 
+require(pracma)
+sol <- bvp(f=function(x)x,g=function(x)0*x,h=function(x)0*x,x=c(-l,l),y=c(0,1),n=200)
 
 
 ## -----------------------------------------------------------------------------
@@ -76,39 +72,32 @@ h <- sG %*% coefs
 
 
 ## -----------------------------------------------------------------------------
-## bvpsolve
-plot(sol[,1],sol[,2],xlab="x",ylab="Probability of exit right")
+## Plot bvp::pracma solution
+plot(sol$xs,sol$ys,type="l",xlab="x",ylab="Probability")
+
+## Scale function by numerical integration 
+plot(ss,from=-l,to=l,col="red",add=TRUE)
 
 ## Monte carlo
 points(x0,mean(res[2,]>0))
 lines(c(x0,x0),mean(res[2,]>0)+c(-2,2)*sqrt(var(res[2,]>0)/ncol(res)))
-
-## Scale function by numerical integration 
-plot(ss,from=-l,to=l,add=TRUE,col="red")
 
 ## With the generator
 lines(xc,h[2:(length(h)-1)],col="green")
 
 
 ## -----------------------------------------------------------------------------
-## Expected time to exit
-fun <- function(x,y,p)
-    list(c(y[2],-2/g(x)/g(x)*(f(x)*y[2]+1)))
+sol <- bvp(f=function(x)x,g=function(x)0*x,h=function(x)0*x-1,x=c(-l,l),y=c(0,0),n=200)
 
-x <- seq(-l,l,length=201)
-sol.bvp <- bvpshoot(yini = c(0,NA),yend=c(0,NA),x=x,func=fun,guess=0)
-
-
-## -----------------------------------------------------------------------------
 G <- fvade(f,function(x)0.5*g(x)*g(x),xi,'a')
 k.fvade <- solve(G,rep(-1,nrow(G)))
 
 
 ## -----------------------------------------------------------------------------
-## Plot bvp solution 
-plot(sol.bvp[,1],sol.bvp[,2],type="l",xlab="x",ylab="Expected time to exit")
+## Plot solution from pracma::bvp
+plot(sol$xs,sol$ys,col=1,type="l")
 
-## Add solution from generator
+## Plot solution from generator
 lines(xc,k.fvade,col="green")
 
 ## Add Monte Carlo; add confidence interval 
@@ -117,13 +106,8 @@ lines(rep(x0,2),mean(res[1,]) + c(2,-2)*sqrt(var(res[1,])/N))
 
 
 ## -----------------------------------------------------------------------------
-## Cumulated reward (x squared)
-fun <- function(x,y,p)
-    list(c(y[2],-2/g(x)/g(x)*(f(x)*y[2]+x^2)))
-
-x <- seq(-1,1,0.01)
-sol.bvp <- bvpshoot(yini = c(0,NA),yend=c(0,NA),x=x,func=fun,guess=0)
-
+## Compute solution with pracma::bvp
+sol <- bvp(f=function(x)x,g=function(x)0*x,h=function(x)-x^2,x=c(-l,l),y=c(0,0),n=200)
 
 ## Compute solution from generator
 G <- fvade(f,function(x)0.5*g(x)*g(x),xi,'a')
@@ -131,7 +115,7 @@ k.fvade <- solve(G,-xc^2)
 
 
 ## -----------------------------------------------------------------------------
-plot(sol.bvp[,1],sol.bvp[,2],type="l",xlab="x",ylab="Expected cumulated reward")
+plot(sol$xs,sol$ys,type="l",xlab="x",ylab="Expected cumulated reward")
 lines(xc,k.fvade,col="green")
 
 ## Add Monte Carlo; add confidence interval 
