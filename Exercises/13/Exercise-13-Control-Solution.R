@@ -25,7 +25,7 @@ sol.opt <- sapply(1:M,function(i)euler(fopt,g,tvec,x0,B=B[,i],p=abs)$X)
 sol.ch <-  sapply(1:M, function(i)euler(fch,g,tvec,x0,B=B[,i],p=abs)$X)
 
 J.opt <- mean(sqrt(sol.opt^2))
-J.ch <- mean(sqrt(0.5*sol.opt))
+J.ch <- mean(sqrt(0.5*sol.ch))
 
 
 ## -----------------------------------------------------------------------------
