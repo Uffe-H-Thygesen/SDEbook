@@ -1,6 +1,38 @@
 ## -----------------------------------------------------------------------------
 require(SDEtools)
 
+## Specific examples of system parameters 
+lambda <- 1
+sigma <- 1
+x <- 1
+
+EXt <- function(t) x*exp(-lambda*t)
+
+## Differential lyapunov equation
+Lyap <- function(V) -2*lambda*V + sigma^2
+
+## Analytical solution of the equation
+VXt <- function(t) sigma^2/2/lambda*(1-exp(-2*lambda*t))
+
+## Limit as time goes to infinity, assuming a<0
+VXinf <- sigma^2/2/lambda
+
+## Test that it is an equilibrium point for the Lyapunov equation
+print(Lyap(VXinf))
+
+plot(EXt,from=0,to=10,lty="dashed",ylim=c(-1,1)*1.5)
+plot(function(t) EXt(t)+sqrt(VXt(t)),from=0,to=10,add=TRUE,lty="dotted")
+plot(function(t) EXt(t)-sqrt(VXt(t)),from=0,to=10,add=TRUE,lty="dotted")
+
+abline(h= sqrt(VXinf),lty="dotdash")
+abline(h=-sqrt(VXinf),lty="dotdash")
+
+times <- seq(0,10,0.01)
+sim <- euler(f=function(x)-lambda*x,g=function(x) sigma,times=times,x0=x)
+lines(sim$times,sim$X)
+
+
+## -----------------------------------------------------------------------------
 ## System parameters
 m <- 1    # [kg]
 k <- 0.5  # [N/m]
@@ -81,36 +113,4 @@ plot(ws,abs(Hs),log="xy",type="l",ylab="|H|")
 plot(ws,Arg(Hs),log="x",type="l",ylab="|H|")
 plot(ws,abs(Hs)^2,type="l",log="xy",ylab="Var.spec.")
 lines(ws,rep(sigma^2,length(ws)),lty="dashed")
-
-
-## -----------------------------------------------------------------------------
-## Specific examples of system parameters 
-lambda <- 1
-sigma <- 1
-x <- 1
-
-EXt <- function(t) x*exp(-lambda*t)
-
-## Differential lyapunov equation
-Lyap <- function(V) -2*lambda*V + sigma^2
-
-## Analytical solution of the equation
-VXt <- function(t) sigma^2/2/lambda*(1-exp(-2*lambda*t))
-
-## Limit as time goes to infinity, assuming a<0
-VXinf <- sigma^2/2/lambda
-
-## Test that it is an equilibrium point for the Lyapunov equation
-print(Lyap(VXinf))
-
-plot(EXt,from=0,to=10,lty="dashed",ylim=c(-1,1)*1.5)
-plot(function(t) EXt(t)+sqrt(VXt(t)),from=0,to=10,add=TRUE,lty="dotted")
-plot(function(t) EXt(t)-sqrt(VXt(t)),from=0,to=10,add=TRUE,lty="dotted")
-
-abline(h= sqrt(VXinf),lty="dotdash")
-abline(h=-sqrt(VXinf),lty="dotdash")
-
-times <- seq(0,10,0.01)
-sim <- euler(f=function(x)-lambda*x,g=function(x) sigma,times=times,x0=x)
-lines(sim$times,sim$X)
 
